@@ -1,0 +1,28 @@
+To avoid giving the route53_updater.py script access to your entire Route 53 hosted zone
+(or, god forbid, your whole AWS account), create an IAM user with this policy as the only
+permissions. This will only allow modifying a single DNS name within the hosted zone.
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ChangeResourceRecordSets"
+            ],
+            "Resource": "arn:aws:route53:::hostedzone/YOUR_HOSTED_ZONE_ID",
+            "Condition": {
+                "ForAllValues:StringEquals": {
+                    "route53:ChangeResourceRecordSetsNormalizedRecordNames": "YOUR_DYNAMIC_DNS_NAME"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "route53:ListResourceRecordSets"
+            ],
+            "Resource": "arn:aws:route53:::hostedzone/YOUR_HOSTED_ZONE_ID"
+        }
+    ]
+}
