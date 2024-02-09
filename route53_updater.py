@@ -4,14 +4,9 @@ import sys
 import urllib.request
 import boto3
 
-boto3.setup_default_session(profile_name='DynamicDNSUpdater')
-
 
 def update_route53_dynamic_dns(hosted_zone_id, dyn_dns_name):
     print("Route 53 dynamic DNS updater running...")
-
-    #hosted_zone_id = 'Z0238707773X2AK9OXYJ'
-    #dyn_dns_name = 'home-ip.danford.dev'
 
     external_ip = urllib.request.urlopen('https://checkip.amazonaws.com').read().decode('utf8').rstrip()
 
